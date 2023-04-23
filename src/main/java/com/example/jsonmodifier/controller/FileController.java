@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,9 +20,11 @@ public class FileController {
 
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestBody Map<String, Object> json) {
+    public ResponseEntity<String> uploadFile(@RequestBody List<Object> jsonList) {
+        System.out.println(jsonList.toString());
         try {
-            final String fileName = fileService.uploadFile(json);
+            List<Map<String, Object>> json = jsonList;
+            final String fileName = fileService.uploadFile(jsonList);
             return new ResponseEntity<>("Plik " + fileName + " został zapisany na dysku.", HttpStatus.OK);
         } catch (IOException e) {
             return new ResponseEntity<>("Wystąpił błąd podczas zapisywania pliku na dysku.", HttpStatus.INTERNAL_SERVER_ERROR);

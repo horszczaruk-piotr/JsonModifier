@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -15,9 +16,9 @@ public class FileService {
     private final JsonConverter jsonConverter;
     private final FileRepository fileRepository;
 
-    public String uploadFile(Map<String, Object> json) throws IOException {
+    public String uploadFile(List<Map<String, Object>> jsonList) throws IOException {
         try {
-            String csvData = jsonConverter.convertJsonToCsv(json);
+            String csvData = jsonConverter.convertJsonToCsv(jsonList);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm");
             String fileName = "file_" + LocalDateTime.now().format(formatter) + ".csv";
             fileRepository.saveFile(fileName, csvData);
